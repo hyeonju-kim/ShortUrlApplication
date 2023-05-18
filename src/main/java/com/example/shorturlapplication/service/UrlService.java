@@ -41,7 +41,7 @@ public class UrlService {
 
         if (!urlRepository.existsByLongUrl(longUrl)) {
             url.setLongUrl(longUrl);
-            url.setShortUrl(portalAddress + "srt" + seq);  // srt1, srt2 ..
+            url.setShortUrl(portalAddress + "srt" + seq);  // http://localhost:8080/srt1, http://localhost:8080/srt2 ..
             urlRepository.save(url);
             return url;
         }else {
