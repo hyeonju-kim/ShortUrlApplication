@@ -1,21 +1,31 @@
 package com.example.shorturlapplication.service;
 
+import com.example.shorturlapplication.annotations.BigData;
+import com.example.shorturlapplication.annotations.IllegalUrlChecking;
 import com.example.shorturlapplication.domain.ShortUrlSeq;
 import com.example.shorturlapplication.domain.Url;
+import com.example.shorturlapplication.domain.UrlDto;
+import com.example.shorturlapplication.exception.DuplicatedException;
+import com.example.shorturlapplication.repository.ShortUrlCountRepository;
 import com.example.shorturlapplication.repository.ShortUrlSeqRepository;
 import com.example.shorturlapplication.repository.UrlRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UrlService {
     private final UrlRepository urlRepository;
     private final ShortUrlSeqRepository shortUrlSeqRepository;
-
-    @Value("${portal.address}")
-    private String portalAddress;
+    private final List<String> illegalUrlList;
+    private final ShortUrlCountRepository shortUrlCountRepository;
 
     // 1. ShortUrlSeq 만들기 로직
     public Integer generateShortUrlSeq(){
@@ -33,25 +43,38 @@ public class UrlService {
             return findSeqVal;
         }
     }
-
     // 2. Short Url 만들기 로직
-    public Url generateShortUrl(String longUrl){
-        Url url = new Url();
+    @IllegalUrlChecking
+    public UrlDto generateShortUrl(String longUrl){
+
         Integer seq = generateShortUrlSeq();
 
-        if (!urlRepository.existsByLongUrl(longUrl)) {
+        if(!urlRepository.existsByLongUrl(longUrl)){
+            Url url = new Url();
             url.setLongUrl(longUrl);
-            url.setShortUrl(portalAddress + "srt" + seq);  // http://localhost:8080/srt1, http://localhost:8080/srt2 ..
+            url.setShortUrl("srt" + seq);  // srt1, srt2 ..
             urlRepository.save(url);
-            return url;
+
+            UrlDto urlDto = new UrlDto();
+            urlDto.setShortUrl(url.getShortUrl());
+            urlDto.setLongUrl(url.getLongUrl());
+            return urlDto;
+
         }else {
-            return url;
+            throw new DuplicatedException("이미 등록된 주소입니다!!!!!!!!!!"); // 익셉션 던지기
         }
+
     }
-    // 3. 리다이렉트 위한 longUrl 가져오기
-    public String findLongUrl(String shorty) {
-        String shortUrl = portalAddress + shorty;
-        Url findUrl = urlRepository.findByShortUrl(shortUrl).orElse(null);
-        return findUrl.getLongUrl();
+    // 3. 리다이렉트 위한 longUrl 가져오기 및 카운트 체크추가
+    @BigData
+    public UrlDto findLongUrl(String shorty) {
+        UrlDto urlDto = new UrlDto();
+        Optional<Url> findUrl = urlRepository.findByShortUrl(shorty);
+
+        if(findUrl.isPresent()){ // 분기처리 해줘야 한다. 값이 없으면 널포인터 익셉션 터질 수도 있다!!! ..
+            urlDto.setShortUrl(findUrl.get().getShortUrl());
+            urlDto.setLongUrl(findUrl.get().getLongUrl());
+        }
+        return urlDto;
     }
 }
