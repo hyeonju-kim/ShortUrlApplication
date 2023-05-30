@@ -1,4 +1,4 @@
-package com.example.shorturlapplication;
+package com.example.shorturlapplication.web;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @Configuration
 public class AppConfig {
@@ -18,5 +19,10 @@ public class AppConfig {
         list.add("daum");
         return list;
     }
+
+
+
+
+
 
 }

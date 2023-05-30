@@ -9,26 +9,15 @@
     * {
       font-family: 'Jua', sans-serif;
     }
-    .mybtns {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      margin-top: 5px;
-    }
-    .mybtns > button {
-      margin-right: 10px;
-    }
   </style>
 </head>
 <body>
-<div class="container" style="max-width: 700px">
+<div class="container" style="max-width: 600px">
   <div class="py-5 text-center">
-    <h1>변환된 URL</h1>
+    <h1>등록된 URL 전체보기</h1>
   </div>
   <div class="mybtns">
     <button type="button" class="w-20 btn btn-primary btn-lg" onclick="location.href='/basic'">등록화면</button>
-    <button type="button" class="w-20 btn btn-primary btn-lg" onclick="location.href='/dashboard'">대시보드</button>
   </div>
   <hr class="my-4">
   <div>
@@ -39,13 +28,15 @@
         <th>Short Url</th>
         <th>등록날짜</th>
         <th>최근사용날짜</th>
+        <th>count</th>
       </thead>
       <tbody>
-      <tr>
-        <td th:text="${urlDto.getLongUrl()}">Long Url</td>
-        <td><a th:href="@{${urlDto.getLongUrl()}}" th:text="${urlDto.getShortUrl()}">Short Url</a></td>
-        <td th:text="${#temporals.format(urlDto.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">등록날짜</td>
-        <td th:text="${#temporals.format(urlDto.getModifeidAt(), 'yyyy-MM-dd HH:mm')}">최근사용날짜</td>
+      <tr th:each="url :${allUrl}">
+        <td th:text="${url.getLongUrl()}">긴 유알엘</td>
+        <td><a th:href="@{${url.getShortUrl}}" th:text="${url.getShortUrl}">변환된 유알엘</a></td>
+        <td th:text="${#temporals.format(url.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">등록날짜</td>
+        <td th:text="${#temporals.format(url.getModifeidAt(), 'yyyy-MM-dd HH:mm')}">최근사용날짜</td>
+        <td th:text="${url.getCount()}">count</td>
       </tr>
       </tbody>
     </table>

@@ -10,9 +10,10 @@ public class AccessInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
         if (requestURI.contains("3")) {
-            response.sendRedirect("/api/basic");
+            response.sendRedirect("/basic");
             return false;
         }
+
         return true;
     }
 

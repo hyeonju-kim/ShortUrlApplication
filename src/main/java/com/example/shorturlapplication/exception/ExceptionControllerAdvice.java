@@ -5,25 +5,38 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Component
-@RestControllerAdvice
+//@RestControllerAdvice
+@ControllerAdvice
 public class ExceptionControllerAdvice {
     // 특정한 사이트 차단
     @ExceptionHandler(IllegalUrlException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseDto illeUrl(IllegalUrlException e) {
-        return new ResponseDto("400", e.getMessage());
+    public String illeUrl(IllegalUrlException e, Model model) {
+        String message = e.getMessage();
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        model.addAttribute("message", message);
+        model.addAttribute("status", status.value());
+
+        return "error";
     }
 
     // 중복된 url 처리
     @ExceptionHandler(DuplicatedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseDto dupliEx(DuplicatedException e) {
-        return new ResponseDto("500", e.getMessage());
+    public String dupliEx(DuplicatedException e, Model model) {
+        String message = e.getMessage();
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        model.addAttribute("message", message);
+        model.addAttribute("status", status.value());
+
+        return "error";
     }
 
     //ResponseDto

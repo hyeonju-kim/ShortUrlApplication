@@ -3,6 +3,7 @@ package com.example.shorturlapplication.repository;
 import com.example.shorturlapplication.domain.Url;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UrlRepository extends JpaRepository<Url,Long> {
@@ -12,4 +13,6 @@ public interface UrlRepository extends JpaRepository<Url,Long> {
     Optional<Url> findByShortUrl(String shortUrl);
 
     Optional<Url> findByLongUrl(String longUrl);
+
+    List<Url> findAll();
 }

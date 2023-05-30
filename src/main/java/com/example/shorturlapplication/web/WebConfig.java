@@ -1,4 +1,4 @@
-package com.example.shorturlapplication;
+package com.example.shorturlapplication.web;
 
 import com.example.shorturlapplication.web.interceptor.AccessInterceptor;
 import org.springframework.context.annotation.Configuration;

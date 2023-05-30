@@ -1,4 +1,4 @@
-package com.example.shorturlapplication;
+package com.example.shorturlapplication.web;
 
 import com.example.shorturlapplication.domain.ShortUrlCount;
 import com.example.shorturlapplication.domain.UrlDto;
@@ -32,16 +32,14 @@ public class LogAopComponent {
         log.info(target);
 
         //Before
-        log.info("IllegalUrlChecking 로그를 남기기 시작합니다.");
         for (String list : illegalUrlList) {
             if (target.contains(list)) {
-                throw new IllegalUrlException("naver, daum은 등록할 수 없습니다.");
+                throw new IllegalUrlException("naver, daum은 등록할 수 없습니다 ! ");
             }
         }
 
         Object result =  proceedingJoinPoint.proceed();
         //After
-        log.info("IllegalUrlChecking 로그를 남기기를 종료합니다.");
 
         return result;
     }
@@ -50,8 +48,6 @@ public class LogAopComponent {
     public Object bigDataCheck(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         //Before
-        log.info("빅데이터 로그를 남기기 시작합니다.");
-
         Object result =  proceedingJoinPoint.proceed();
 
         //After
@@ -62,8 +58,6 @@ public class LogAopComponent {
             shortUrlCount.setCount(shortUrlCount.getCount() + 1);
             shortUrlCountRepository.save(shortUrlCount);
         }
-
-        log.info("빅데이터 로그를 남기기를 종료합니다.");
 
         return result;
     }
