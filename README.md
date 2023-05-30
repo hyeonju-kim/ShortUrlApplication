@@ -1,4 +1,4 @@
-# Simple ShortUrl Application 만들기
+# 미니프로젝트 ShortUrl Application 만들기
 
 -   **사용 기술**
 
