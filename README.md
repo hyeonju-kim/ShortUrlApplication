@@ -40,7 +40,7 @@
 
 약 3주간 (23/5/9~5/27)
 
-> 진행 과정을 \[기술 블로그\](http://www.yeees.tistory.com/)에 정리했습니다.
+> 진행 과정을 [기술 블로그](http://www.yeees.tistory.com/)에 정리했습니다.
 
 <p align="center">
   <img src="https://github.com/hyeonju-kim/ShortUrlApplication/assets/58349668/602a4033-1adc-4876-8ab8-e4c954f710d1">
